@@ -11,8 +11,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class TemplateNamespaceProvider implements XmlFileNSInfoProvider {
     public static final String PRADO_NAMESPACE = "http://pradoframework.com/template";
+    public static final String PRADO_PROP_NAMESPACE = "http://pradoframework.com/template-prop";
 
-    private static final String[][] NAMESPACES = {{"com", PRADO_NAMESPACE}};
+    private static final String[][] NAMESPACES = {{"com", PRADO_NAMESPACE}, {"prop", PRADO_PROP_NAMESPACE}};
 
     public String[][] getDefaultNamespaces(@NotNull XmlFile file) {
         return FileTypeFactory.isTemplateOrPage(file) ? NAMESPACES : null;
