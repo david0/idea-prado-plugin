@@ -1,39 +1,65 @@
 <idea-plugin version="2">
-  <id>com.phpstorm.prado</id>
-  <name>PRADO Plugin</name>
-  <version>0.1</version>
-  <vendor email="david0@github.com" url="http://github.com/david0/">David</vendor>
+    <id>idea.plugins.prado</id>
+    <name>PRADO Plugin</name>
+    <version>0.1</version>
+    <vendor email="david0@github.com" url="http://github.com/david0/">David Otto</vendor>
 
-  <description><![CDATA[
-    PRADO Framework Integration for PHPStorm/IDEA
+    <description><![CDATA[
+<h1>PRADO Framework Integration</h1>
+for PHPStorm/IDEA.
+
+<h2>Features:</h2>
+<h3>Templates (.tpl/.page)</h3>
+<ul>
+    <li>Syntax highlighting</li>
+    <li>Autocompletion for control names</li>
+    <li>Autocompletion for attribute names</li>
+    <li>Check for used control types</li>
+    <li>Check for used control properties including quickfixes</li>
+</ul>
+<h3>Controls (.php)</h3>
+<ul>
+    <li>Autocompletion for used control ids (properties) including type information</li>
+</ul>
     ]]></description>
 
-  <change-notes><![CDATA[
+    <change-notes><![CDATA[
+0.1: initial release
     ]]>
-  </change-notes>
+    </change-notes>
 
-  <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="131"/>
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="131"/>
 
-  <depends>com.jetbrains.php</depends>
-  <depends>com.intellij.modules.platform</depends>
+    <depends>com.jetbrains.php</depends>
+    <depends>com.intellij.modules.platform</depends>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <fileTypeFactory implementation="com.phpstorm.prado.filetypes.FileTypeFactory" />
-    <xml.fileNSInfoProvider implementation="com.phpstorm.prado.TemplateNamespaceProvider"/>
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="idea.plugins.prado.filetypes.FileTypeFactory"/>
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
+        <php.typeProvider2 implementation="idea.plugins.prado.completion.ControlTypeProvider"/>
+        <completion.contributor language="PHP" implementationClass="idea.plugins.prado.completion.ControlIdContributor"
+                                order="first"/>
+        <completion.contributor language="HTML"
+                                implementationClass="idea.plugins.prado.completion.TemplateControlContributor"
+                                order="first"/>
+        <completion.contributor language="HTML"
+                                implementationClass="idea.plugins.prado.completion.TemplatePropertiesContributor"
+                                order="first"/>
+        <completion.contributor language="HTML" implementationClass="idea.plugins.prado.completion.TemplateEventsContributor" order="first"/>
+        <!--Workaround for OnClick="" that is converted to javascript node-->
+        <completion.contributor language="JavaScript" implementationClass="idea.plugins.prado.completion.TemplateEventsContributor" order="first"/>
 
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
+        <annotator language="HTML" implementationClass="idea.plugins.prado.annotators.UnknownEventAnnotator"/>
+        <annotator language="HTML" implementationClass="idea.plugins.prado.annotators.UnknownControlAnnotator"/>
+        <annotator language="HTML" implementationClass="idea.plugins.prado.annotators.UnknownPropertyAnnotator"/>
 
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
+        <gotoDeclarationHandler implementation="idea.plugins.prado.gotohandlers.GotoEventDeclaration"/>
+        <gotoDeclarationHandler implementation="idea.plugins.prado.gotohandlers.GotoControlDeclaration"/>
 
+        <xml.fileNSInfoProvider implementation="idea.plugins.prado.filetypes.TemplateNamespaceProvider"/>
+        <xml.xmlExtension implementation="idea.plugins.prado.filetypes.TemplateXmlExtension" order="first"/>
+        <fileBasedIndex implementation="idea.plugins.prado.indexes.ViewControlsIndex"/>
+    </extensions>
 
 </idea-plugin>

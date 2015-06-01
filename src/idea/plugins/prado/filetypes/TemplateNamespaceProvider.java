@@ -1,8 +1,8 @@
-package com.phpstorm.prado;
+package idea.plugins.prado.filetypes;
 
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlFileNSInfoProvider;
-import com.phpstorm.prado.filetypes.FileTypeFactory;
+import com.intellij.xml.util.XmlUtil;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -13,10 +13,14 @@ public class TemplateNamespaceProvider implements XmlFileNSInfoProvider {
     public static final String PRADO_NAMESPACE = "http://pradoframework.com/template";
     public static final String PRADO_PROP_NAMESPACE = "http://pradoframework.com/template-prop";
 
-    private static final String[][] NAMESPACES = {{"com", PRADO_NAMESPACE}, {"prop", PRADO_PROP_NAMESPACE}};
+    private static final String[][] NAMESPACES = {
+            new String[]{"com", PRADO_NAMESPACE},  // XSLT URL is a hack in order to make it clear that this will be further processed
+            new String[]{"prop", PRADO_PROP_NAMESPACE},
+            new String[]{"", XmlUtil.HTML_URI}
+    };
 
     public String[][] getDefaultNamespaces(@NotNull XmlFile file) {
-        return FileTypeFactory.isTemplateOrPage(file) ? NAMESPACES : null;
+        return FileTypeFactory.isTemplateOrPage(file.getName()) ? NAMESPACES : null;
     }
 
     @Override

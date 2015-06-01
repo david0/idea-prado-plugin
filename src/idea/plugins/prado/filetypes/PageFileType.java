@@ -1,18 +1,13 @@
-package com.phpstorm.prado.filetypes;
+package idea.plugins.prado.filetypes;
 
 
-import com.intellij.openapi.fileTypes.LanguageFileType;
-import com.phpstorm.prado.images.Icons;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-
-public class PageFileType extends LanguageFileType {
+public class PageFileType extends TemplateFileType {
     public static final PageFileType INSTANCE = new PageFileType();
 
     private PageFileType() {
-        super(TemplateLanguage.INSTANCE);
+        super();
     }
 
     @NotNull
@@ -33,9 +28,4 @@ public class PageFileType extends LanguageFileType {
         return "page";
     }
 
-    @Nullable
-    @Override
-    public Icon getIcon() {
-        return Icons.TEMPLATE;
-    }
 }
