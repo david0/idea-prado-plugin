@@ -1,8 +1,10 @@
 # PRADO Framework Integration for PHPStorm/IDEA
 
+![Demo](demo.gif)
+
 ## Installation
 
-Install via `Preferences->Plugins->Browse repositories` and search PRADO plugin in PHPStorm/IDEA
+Install the latest release using the Plugin Manager via `Preferences->Plugins->Browse repositories` and search PRADO plugin in PHPStorm/IDEA.
 
 ## Building
 
