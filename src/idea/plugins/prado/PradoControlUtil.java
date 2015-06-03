@@ -1,14 +1,27 @@
 package idea.plugins.prado;
 
-import com.jetbrains.php.lang.psi.elements.Method;
-import com.jetbrains.php.lang.psi.elements.PhpClass;
-import com.jetbrains.php.lang.psi.elements.PhpModifier;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.jetbrains.php.PhpIndex;
+import com.jetbrains.php.lang.psi.elements.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class PradoControlUtil {
+
+    public static PhpClass classForFieldReference(FieldReference fieldReference) {
+        Variable[] variables = PsiTreeUtil.getChildrenOfType(fieldReference, Variable.class);
+        if(variables == null)
+            return null;
+
+        Variable variable = variables[0];
+
+        String inferredTypeName = variable.getInferredType(1).toStringRelativized("\\");
+        PhpClass phpClass = PhpIndex.getInstance(fieldReference.getProject()).getClassByName(inferredTypeName);
+        return phpClass;
+
+    }
 
     public static Set<String> propertiesForControl(PhpClass cls) {
         Set<String> result = new HashSet<String>();

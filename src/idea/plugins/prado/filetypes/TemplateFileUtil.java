@@ -8,6 +8,7 @@ import com.jetbrains.php.lang.psi.elements.PhpClass;
 import java.util.Collection;
 
 public class TemplateFileUtil {
+
     public static PsiFile findTemplateFileForPhpFile(PsiFile classFile) {
         PsiDirectory containingDirectory = classFile.getOriginalFile().getContainingDirectory();
         if (containingDirectory == null) // i don't know why, but there are files without an containing directory?!

@@ -4,11 +4,15 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.indexing.FileBasedIndexImpl;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.FieldReference;
+import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
+import com.jetbrains.php.lang.psi.elements.Variable;
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider2;
+import idea.plugins.prado.PradoControlUtil;
 import idea.plugins.prado.filetypes.TemplateFileUtil;
 import idea.plugins.prado.indexes.ViewControlsIndex;
 import org.jetbrains.annotations.Nullable;
@@ -29,14 +33,16 @@ public class ControlTypeProvider implements PhpTypeProvider2 {
     @Override
     public String getType(PsiElement psiElement) {
         if (psiElement instanceof FieldReference) {
-            String varName = ((FieldReference) psiElement).getName();
+            FieldReference fieldReference = (FieldReference) psiElement;
+            PhpClass phpClass = PradoControlUtil.classForFieldReference(fieldReference);
+            if(phpClass == null)
+                return null;
 
-            PsiFile classFile = psiElement.getContainingFile();
-            PsiFile pageFile = TemplateFileUtil.findTemplateFileForPhpFile(classFile);
+            PsiFile pageFile = TemplateFileUtil.findTemplateFileForPhpFile(phpClass.getContainingFile());
             if (pageFile == null) // no prado page class
                 return null;
 
-            List<String> values = FileBasedIndexImpl.getInstance().getValues(ViewControlsIndex.NAME, varName, GlobalSearchScope.fileScope(pageFile));
+            List<String> values = FileBasedIndexImpl.getInstance().getValues(ViewControlsIndex.NAME, fieldReference.getName(), GlobalSearchScope.fileScope(pageFile));
             if (values.isEmpty())
                 return null;
             return values.get(0);

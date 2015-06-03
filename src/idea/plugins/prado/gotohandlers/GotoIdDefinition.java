@@ -14,7 +14,9 @@ import com.intellij.psi.xml.XmlAttributeValue;
 import com.intellij.util.PlatformIcons;
 import com.intellij.util.indexing.FileBasedIndex;
 import com.jetbrains.php.lang.psi.elements.FieldReference;
+import com.jetbrains.php.lang.psi.elements.PhpClass;
 import idea.plugins.prado.ControlAttributeValueCondition;
+import idea.plugins.prado.PradoControlUtil;
 import idea.plugins.prado.filetypes.TemplateFileUtil;
 import idea.plugins.prado.indexes.ViewControlsIndex;
 import org.jetbrains.annotations.Nullable;
@@ -27,8 +29,11 @@ public class GotoIdDefinition implements GotoDeclarationHandler {
     @Override
     public PsiElement[] getGotoDeclarationTargets(PsiElement psiElement, int i, Editor editor) {
         FieldReference fieldReference = PsiTreeUtil.getParentOfType(psiElement, FieldReference.class);
-        PsiFile classFile = psiElement.getContainingFile();
-        PsiFile pageFile = TemplateFileUtil.findTemplateFileForPhpFile(classFile);
+        PhpClass phpClass = PradoControlUtil.classForFieldReference(fieldReference);
+        if(phpClass == null)
+            return new PsiElement[0];
+
+        PsiFile pageFile = TemplateFileUtil.findTemplateFileForPhpFile(phpClass.getContainingFile());
         if (pageFile == null) // no prado page class
             return new PsiElement[0];
 
