@@ -7,8 +7,8 @@ import com.intellij.util.io.DataExternalizer;
 import com.intellij.util.io.EnumeratorStringDescriptor;
 import com.intellij.util.io.KeyDescriptor;
 import com.intellij.util.xml.NanoXmlUtil;
-import idea.plugins.prado.filetypes.FileTypeFactory;
 import gnu.trove.THashMap;
+import idea.plugins.prado.filetypes.FileTypeFactory;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.StringReader;

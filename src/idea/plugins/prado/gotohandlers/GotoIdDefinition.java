@@ -1,21 +1,16 @@
 package idea.plugins.prado.gotohandlers;
 
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.navigation.actions.GotoDeclarationHandler;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.xml.XmlAttribute;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.util.PlatformIcons;
 import com.intellij.util.indexing.FileBasedIndex;
 import com.jetbrains.php.lang.psi.elements.FieldReference;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
-import idea.plugins.prado.ControlAttributeValueCondition;
 import idea.plugins.prado.PradoControlUtil;
 import idea.plugins.prado.filetypes.TemplateFileUtil;
 import idea.plugins.prado.indexes.ViewControlsIndex;
@@ -30,14 +25,11 @@ public class GotoIdDefinition implements GotoDeclarationHandler {
     public PsiElement[] getGotoDeclarationTargets(PsiElement psiElement, int i, Editor editor) {
         FieldReference fieldReference = PsiTreeUtil.getParentOfType(psiElement, FieldReference.class);
         PhpClass phpClass = PradoControlUtil.classForFieldReference(fieldReference);
-        if(phpClass == null)
+        if (phpClass == null)
             return new PsiElement[0];
 
         PsiFile pageFile = TemplateFileUtil.findTemplateFileForPhpFile(phpClass.getContainingFile());
         if (pageFile == null) // no prado page class
-            return new PsiElement[0];
-
-        if (!fieldReference.getClassReference().getName().equals("this"))
             return new PsiElement[0];
 
         String key = fieldReference.getName();

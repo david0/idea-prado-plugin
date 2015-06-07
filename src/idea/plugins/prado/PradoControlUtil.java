@@ -12,7 +12,7 @@ public class PradoControlUtil {
 
     public static PhpClass classForFieldReference(FieldReference fieldReference) {
         Variable[] variables = PsiTreeUtil.getChildrenOfType(fieldReference, Variable.class);
-        if(variables == null)
+        if (variables == null)
             return null;
 
         Variable variable = variables[0];
@@ -20,7 +20,6 @@ public class PradoControlUtil {
         String inferredTypeName = variable.getInferredType(1).toStringRelativized("\\");
         PhpClass phpClass = PhpIndex.getInstance(fieldReference.getProject()).getClassByName(inferredTypeName);
         return phpClass;
-
     }
 
     public static Set<String> propertiesForControl(PhpClass cls) {

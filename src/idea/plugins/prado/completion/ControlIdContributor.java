@@ -3,20 +3,15 @@ package idea.plugins.prado.completion;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.project.Project;
-import com.intellij.patterns.ElementPattern;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.PlatformIcons;
 import com.intellij.util.ProcessingContext;
 import com.intellij.util.indexing.FileBasedIndex;
-import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
 import com.jetbrains.php.lang.psi.elements.FieldReference;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
-import com.jetbrains.php.lang.psi.elements.Variable;
-import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 import idea.plugins.prado.PradoControlUtil;
 import idea.plugins.prado.filetypes.TemplateFileUtil;
 import idea.plugins.prado.indexes.ViewControlsIndex;
@@ -36,14 +31,14 @@ public class ControlIdContributor extends CompletionContributor {
             protected void addCompletions(CompletionParameters completionParameters, ProcessingContext processingContext, CompletionResultSet completionResultSet) {
                 FieldReference fieldReference = PsiTreeUtil.getParentOfType(completionParameters.getPosition(), FieldReference.class);
                 PhpClass phpClass = PradoControlUtil.classForFieldReference(fieldReference);
-                if(phpClass == null) // not unique class name
+                if (phpClass == null) // not unique class name
                     return;
 
                 PsiFile pageFile = TemplateFileUtil.findTemplateFileForPhpFile(phpClass.getContainingFile());
                 if (pageFile == null) // no prado page class
                     return;
 
-                if(!phpClass.getName().equals(TemplateFileUtil.classNameForTemplateFile(pageFile)))
+                if (!phpClass.getName().equals(TemplateFileUtil.classNameForTemplateFile(pageFile)))
                     return;
 
                 Project project = completionParameters.getPosition().getProject();

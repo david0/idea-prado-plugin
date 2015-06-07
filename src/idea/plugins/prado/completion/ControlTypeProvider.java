@@ -4,13 +4,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.indexing.FileBasedIndexImpl;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.FieldReference;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
-import com.jetbrains.php.lang.psi.elements.Variable;
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider2;
 import idea.plugins.prado.PradoControlUtil;
 import idea.plugins.prado.filetypes.TemplateFileUtil;
@@ -35,7 +33,7 @@ public class ControlTypeProvider implements PhpTypeProvider2 {
         if (psiElement instanceof FieldReference) {
             FieldReference fieldReference = (FieldReference) psiElement;
             PhpClass phpClass = PradoControlUtil.classForFieldReference(fieldReference);
-            if(phpClass == null)
+            if (phpClass == null)
                 return null;
 
             PsiFile pageFile = TemplateFileUtil.findTemplateFileForPhpFile(phpClass.getContainingFile());
