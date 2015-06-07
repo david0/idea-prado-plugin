@@ -1,10 +1,12 @@
 package idea.plugins.prado;
 
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.*;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,9 +19,24 @@ public class PradoControlUtil {
 
         Variable variable = variables[0];
 
-        String inferredTypeName = variable.getInferredType(1).toStringRelativized("\\");
-        PhpClass phpClass = PhpIndex.getInstance(fieldReference.getProject()).getClassByName(inferredTypeName);
-        return phpClass;
+        String inferredTypeName = variable.getInferredType(1).toStringResolved();
+        Collection<PhpClass> classes = PhpIndex.getInstance(fieldReference.getProject()).getClassesByFQN(inferredTypeName);
+        if (classes.isEmpty())
+            return null;
+
+        if (classes.size() == 1)
+            return classes.iterator().next();
+        else {
+            PsiFile currentFile = fieldReference.getContainingFile().getOriginalFile();
+            // more than one class with this name.
+            // we handle one special case: references to the class defined in the local file
+            for (PhpClass phpClass : classes) {
+                if (phpClass.getContainingFile().getVirtualFile().equals(currentFile.getVirtualFile()))
+                    return phpClass;
+            }
+        }
+
+        return null;
     }
 
     public static Set<String> propertiesForControl(PhpClass cls) {
