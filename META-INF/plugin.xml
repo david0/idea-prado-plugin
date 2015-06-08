@@ -61,6 +61,8 @@ for PHPStorm/IDEA.
         <xml.fileNSInfoProvider implementation="idea.plugins.prado.filetypes.TemplateNamespaceProvider"/>
         <xml.xmlExtension implementation="idea.plugins.prado.filetypes.TemplateXmlExtension" order="first"/>
         <fileBasedIndex implementation="idea.plugins.prado.indexes.ViewControlsIndex"/>
+
+        <lang.documentationProvider language="HTML" implementationClass="idea.plugins.prado.documentation.TemplateControlDocumentationProvider" />
     </extensions>
 
 </idea-plugin>
