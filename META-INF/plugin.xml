@@ -56,6 +56,7 @@ for PHPStorm/IDEA.
 
         <gotoDeclarationHandler implementation="idea.plugins.prado.gotohandlers.GotoEventDeclaration"/>
         <gotoDeclarationHandler implementation="idea.plugins.prado.gotohandlers.GotoControlDeclaration"/>
+        <gotoDeclarationHandler implementation="idea.plugins.prado.gotohandlers.GotoPropertyDeclaration"/>
         <gotoDeclarationHandler implementation="idea.plugins.prado.gotohandlers.GotoIdDefinition"/>
 
         <xml.fileNSInfoProvider implementation="idea.plugins.prado.filetypes.TemplateNamespaceProvider"/>

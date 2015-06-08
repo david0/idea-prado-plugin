@@ -2,7 +2,10 @@ package idea.plugins.prado.filetypes;
 
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.xml.XmlAttribute;
 import com.jetbrains.php.PhpIndex;
+import com.jetbrains.php.lang.documentation.PhpDocumentationProvider;
+import com.jetbrains.php.lang.psi.elements.Method;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 
 import java.util.Collection;
@@ -41,6 +44,26 @@ public class TemplateFileUtil {
             if (containingDirectory.equals(templateFile.getContainingDirectory()))
                 return phpClass;
         }
+        return null;
+    }
+
+    public static Method phpMethodForAttribute(XmlAttribute xmlAttribute){
+        if(!xmlAttribute.getParent().getNamespacePrefix().equals("com"))
+            return null;
+
+        PhpClass cls = PhpIndex.getInstance(xmlAttribute.getProject()).getClassByName(xmlAttribute.getParent().getLocalName());
+        if (cls == null)
+            return null;
+
+        String propertyName = xmlAttribute.getName().toLowerCase();
+        String setterName = "set" + propertyName;
+
+        for (Method method : cls.getMethods()) {
+            if (method.getName().toLowerCase().equals(setterName) || method.getName().toLowerCase().equals(propertyName)) {
+                return method;
+            }
+        }
+
         return null;
     }
 
