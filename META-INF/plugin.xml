@@ -63,6 +63,7 @@ for PHPStorm/IDEA.
         <fileBasedIndex implementation="idea.plugins.prado.indexes.ViewControlsIndex"/>
 
         <lang.documentationProvider language="HTML" implementationClass="idea.plugins.prado.documentation.TemplateControlDocumentationProvider" />
+        <lang.documentationProvider language="HTML" implementationClass="idea.plugins.prado.documentation.TemplatePropertyDocumentationProvider" order="first" />
     </extensions>
 
 </idea-plugin>
