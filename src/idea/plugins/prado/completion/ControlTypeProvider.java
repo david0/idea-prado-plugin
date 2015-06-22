@@ -1,5 +1,6 @@
 package idea.plugins.prado.completion;
 
+import com.intellij.openapi.project.DumbService;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -31,6 +32,9 @@ public class ControlTypeProvider implements PhpTypeProvider2 {
     @Override
     public String getType(PsiElement psiElement) {
         if (psiElement instanceof FieldReference) {
+            if(DumbService.getInstance(psiElement.getProject()).isDumb())
+                return null; //index not yet ready.
+
             FieldReference fieldReference = (FieldReference) psiElement;
             PhpClass phpClass = PradoControlUtil.classForFieldReference(fieldReference);
             if (phpClass == null)
